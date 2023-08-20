@@ -1,6 +1,7 @@
 import { readFile, writeFile } from 'fs/promises';
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
+@Injectable()
 export class MessagesRepository {
   async findOne(id: string) {
     const contents = await readFile('messages.json', 'utf-8')
@@ -8,7 +9,7 @@ export class MessagesRepository {
     if(!messages[id]){
       throw new HttpException(
         'this Id does not exist',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.NOT_FOUND
       );
     }
     return messages[id]
